@@ -1,0 +1,92 @@
+* trailing-newline-indicator.el
+
+Display a visual indicator (⏎) in the left margin for the trailing newline at
+the end of a file. Optionally, it can also display the next line number (e.g.,
+⏎ 43) when line numbers are active.
+
+** Features
+- Shows a ⏎ symbol at the end of a file to mark the trailing newline.
+- Optionally shows the next line number beside it (requires `display-line-numbers-mode`).
+- Works with most buffer operations and updates automatically.
+
+** Installation
+
+There are two recommended ways to install this package.
+
+*** Using package-vc-install (Emacs 29+)
+
+Emacs 29 and later can install packages directly from Git repositories.
+
+#+begin_src elisp
+(package-vc-install "https://github.com/saulotoledo/trailing-newline-indicator")
+(require 'trailing-newline-indicator)
+(global-trailing-newline-indicator-mode 1)
+#+end_src
+
+You can later update all VC-installed packages with:
+
+#+begin_src elisp
+(package-vc-update-all)
+#+end_src
+
+Alternatively, if you use `use-package`:
+
+#+begin_src elisp
+(use-package trailing-newline-indicator
+  :ensure nil
+  :vc (:url "https://github.com/saulotoledo/trailing-newline-indicator")
+  :init
+  (global-trailing-newline-indicator-mode 1))
+#+end_src
+
+*** Manual installation (works on all Emacs versions)
+
+If you’re using an older version of Emacs (before 29), install manually:
+
+#+begin_src elisp
+;; Clone the repository
+;; git clone https://github.com/saulotoledo/trailing-newline-indicator.git \
+;;     ~/.emacs.d/lisp/trailing-newline-indicator
+
+(add-to-list 'load-path "~/.emacs.d/lisp/trailing-newline-indicator")
+(require 'trailing-newline-indicator)
+(global-trailing-newline-indicator-mode 1)
+#+end_src
+
+** Usage
+Enable locally in the current buffer:
+
+#+begin_src elisp
+(trailing-newline-indicator-mode 1)
+#+end_src
+
+Enable globally for all files:
+
+#+begin_src elisp
+(global-trailing-newline-indicator-mode 1)
+#+end_src
+
+** Optional Line Number Display
+To show the next line number (e.g., “⏎ 43”) instead of just the ⏎ symbol:
+
+#+begin_src elisp
+(setq trailing-newline-indicator-show-line-number t)
+#+end_src
+
+This feature requires `display-line-numbers-mode`.
+
+If line numbers are disabled, only the ⏎ symbol is shown.
+
+** Example Configuration
+
+#+begin_src elisp
+;; Enable display of line numbers globally
+(global-display-line-numbers-mode 1)
+
+;; Enable the trailing newline indicator everywhere
+(global-trailing-newline-indicator-mode 1)
+
+;; Optional: hide line numbers in certain modes
+(dolist (hook '(eshell-mode-hook shell-mode-hook term-mode-hook))
+  (add-hook hook (lambda () (display-line-numbers-mode 0))))
+#+end_src
